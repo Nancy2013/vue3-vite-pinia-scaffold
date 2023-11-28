@@ -1,0 +1,39 @@
+.list{
+    height: 100%;
+}
+
+.modal-content{
+    text-align: center;
+}
+
+// 二维码
+.modal-code {
+    width: 357px;
+    height: 347px;
+    background: url(@/assets/images/main/passportManage/code_bg.png) no-repeat;
+    position: relative;
+    background-size: contain;
+    display: inline-block;
+    .code {
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, calc(-50% - 36px));
+    }
+
+    .bottom {
+      position: absolute;
+      left: 50%;
+      transform: translate(-50%, 0);
+      bottom: 33px;
+      width: 100%;
+
+      .text {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+  }
