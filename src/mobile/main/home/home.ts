@@ -1,7 +1,9 @@
 import { defineComponent, onMounted, reactive, toRefs } from "vue";
 import { useI18n } from "vue-i18n";
 import request from "@/utils/axios";
+import HomeItem from './item.vue'
 
+import chinaIcon from "@/assets/mobileImages/main/home/zl_wxhj_img.png"
 import zlDcIcon from "@/assets/mobileImages/main/home/zl_dc_icon.png";
 import zlClIcon from "@/assets/mobileImages/main/home/zl_cl_icon.png";
 import zlEsgIcon from "@/assets/mobileImages/main/home/zl_esg_icon.png";
@@ -52,6 +54,12 @@ const tabArr = [
 		icon: zlSjIcon,
 		activeIcon: zlSjActive,
 		name: "tabArr_name4",
+	},
+	{
+		active: 0,
+		icon: zlClIcon,
+		activeIcon: zlClActive,
+		name: "tabArr_name5",
 	},
 ];
 
@@ -435,6 +443,9 @@ const listArr = {
 };
 
 export default defineComponent({
+	components: {
+		HomeItem
+	},
 	setup() {
 		const { locale } = useI18n();
 		const route = useRoute();
@@ -517,6 +528,8 @@ export default defineComponent({
 		})
 
 		return {
+			chinaIcon,
+			imgs: [successTip],
 			...toRefs(state),
 			activeTab,
 			convertLanguages,

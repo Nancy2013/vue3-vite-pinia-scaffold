@@ -44,10 +44,10 @@ instance.interceptors.request.use(
 		});
 		const token: string | null = localStorage.getItem('token');
 		if (!notToken && token) {
-			headers.Authorization = `${token}`;
+			headers[`Authorization`] = `${token}`;
 		}
 		if (!notToken) {
-			headers.app_id = `${import.meta.env.VITE_APP_ID}`
+			headers[`tenant-id`] = `${import.meta.env.VITE_APP_ID}`
 		}
 		return config;
 	},

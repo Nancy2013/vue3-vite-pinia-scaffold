@@ -3,7 +3,7 @@ import request from "@/utils/axios";
 import { deepClone, isEmpty } from '@/utils/common'
 import { useRouter } from "vue-router";
 import { Modal, message } from "ant-design-vue";
-
+import {showTime} from '@/utils/function'
 export const usePage = (opts: any) => {
 	const { search, queryParams, addPath, deleteParams, transformSearch } = opts;
 	const initSearch = deepClone(search.value)
@@ -32,30 +32,54 @@ export const usePage = (opts: any) => {
 	const query = () => {
 		let { pagination: { pageSize, current } } = state;
 		state.loading = true
-		const paramsData=Object.assign({ pageNum: current, pageSize }, transformSearch && typeof transformSearch === 'function' ? { ...transformSearch(search.value) } : { ...search.value });
+		const paramsData=Object.assign({ pageNo: current, pageSize }, transformSearch && typeof transformSearch === 'function' ? { ...transformSearch(search.value) } : { ...search.value });
 		const params={
 			...queryParams,
 		}
 		const {method}=queryParams;
 		params[`${method==='get'?'params':'data'}`]=paramsData;		
 		request(params).then((res: any) => {
-			const { code, rows, total = 0,data } = res;
-			const dataSource=rows||data; // 兼容不同数据结构
-			state.dataSource = dataSource&&dataSource.map((item: any, key: number) => {
-				item.tableIndex = (current - 1) * pageSize + key + 1
-				return item
-			});
-			state.pagination = {
-				total,
-				current,
-				pageSize,
-			};
+			const { code, data } = res;
+			if(code===200 || code===0){
+				const {list,total}=data;
+				state.dataSource = list&&list.map((item: any, key: number) => {
+					
+					item.tableIndex = (current - 1) * pageSize + key + 1
+					return {
+						...item,
+						...formatTime(item),
+					}
+				});
+				state.pagination = {
+					total,
+					current,
+					pageSize,
+				};
+			}
+			
 			state.loading = false;
 		}).catch((e: any) => {
 			console.error(e);
 			state.loading = false;
 		});
 	};
+
+	/**
+	 * 格式化时间
+	 * @param item 数据
+	 */
+	const formatTime=(item:any)=>{
+		const {createTime,updateTime,}=item;
+		if(createTime){
+			// 创建时间
+			item.createTime=showTime(createTime);
+		}
+		if(updateTime){
+			// 更新时间
+			item.updateTime=showTime(updateTime);
+		}
+		return item;
+	}
 
 	/**
 	 *初始化分页组件

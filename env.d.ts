@@ -1,5 +1,7 @@
 /// <reference types="vite/client" />
 
+declare module 'vue-json-viewer'
+
 declare module '*.vue' {
 	// 引入vue模块中ts的方法
 	import type { DefineComponent } from 'vue'

@@ -1,6 +1,8 @@
-export const formatData = (url: string, method: string, params: any, env?: string) => {
+export  const BASE_URL='/admin-api' // api前缀
+export const formatData = (api: string, method: string, params: any, env?: string) => {
+	const url=env?import.meta.env[env] + api:BASE_URL+api;
 	const data = {
-		url: import.meta.env[env || 'VITE_NODE_URL'] + url,
+		url,
 		type: "json",
 		method,
 	} as any

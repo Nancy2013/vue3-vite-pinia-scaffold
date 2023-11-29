@@ -49,12 +49,22 @@ export default defineConfig({
   },
   server: {
     proxy: {
+      // http://192.168.110.40:48081/
       "/api": {
         target: "https://xi.cn88555.com/api",   // "https://xi.cn88555.com/api", // http://116.147.41.117/api
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
       },
-      
+      "/admin-api/system": {
+         target: "http://192.168.110.221:48080/admin-api",
+         changeOrigin: true,
+         rewrite: (path) => path.replace(/^\/admin-api/, "")
+      },
+      "/admin-api/dpp": {
+        target: "http://192.168.110.40:23110/admin-api",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/admin-api/, "")
+     }
     },
     fs: { strict: false },
   }

@@ -21,23 +21,23 @@
                 </div>
             </div>
 
-            <!-- <div class="login-item">
-                <div class="login-inputBox">
-                    <img :src="require('@/assets/sys/login/password.png')" alt="">
-                    <input type="text" placeholder="请输入密码">
-                </div>
-            </div> -->
-
             <div class="login-item">
+                <div class="login-inputBox">
+                    <img :src="passwordImg" alt="">
+                    <input type="text" placeholder="请输入密码" v-model="password" @input="handleInput($event, 'password')">
+                </div>
+            </div>
+
+            <!-- <div class="login-item">
                 <div class="login-inputBox">
                     <img :src="codeImg" alt="">
                     <input type="text" placeholder="短信验证码" maxlength="6" v-model="validateCode" @input="handleInput($event, 'validateCode')">
                     <div class="login-getCode color" @click="getCode">{{ countDown === 0 ? '获取验证码' : countDown+ ' s' }}</div>
                 </div>
-                <!-- <div class="login-getCode">
+                <div class="login-getCode">
                     <FcButton  :text="countDown === 0 ? '获取' : countDown+ ' s'" @click="getCode"></FcButton>
-                </div> -->
-            </div>
+                </div>
+            </div> -->
 
             <div class="login-forget" @click="handleForget">
                 <img v-if="!isForget" src="@/assets/mobileImages/sys/login/forget.png" alt="">
@@ -60,15 +60,18 @@
 import { ref, onMounted, reactive } from "vue";
 import codeImg from "@/assets/mobileImages/sys/login/code.png";
 import usernameImg from "@/assets/mobileImages/sys/login/username.png";
+import passwordImg from "@/assets/mobileImages/sys/login/password.png";
 import { throttleFnc } from "@/utils/common";
 import request from "@/utils/axios";
 import { validPhone, validCode } from "@/utils/reg";
 import { message } from "ant-design-vue";
+import router from "@/router";
 
 let codeTimer: number | null = null;
 const isForget = ref<boolean>(false);
 const countDown = ref<number>(0);
 const phone = ref<string>(""); // 手机号
+const password = ref<string>(""); // 密码
 const validateCode = ref<string>(""); // 验证码
 
 /**
@@ -133,13 +136,29 @@ const handleForget = () => {
     @return
 */
 const handleSubmit = () => {
-    if (!validPhone(phone.value)) {
-        message.error("请输入正确的账号");
+    if (!phone.value) {
+        message.error("账号校验不能为空!");
         return;
     }
-    if (!validCode(validateCode.value)) {
-        message.error("请输入正确的短信验证码");
+    if (!password.value) {
+        message.error("密码校验不能为空!");
         return;
+    } else {
+        request({
+            url: `${import.meta.env.VITE_BASE_URL}/auth/login`,
+            type: 'json',
+            method: 'post',
+            data: {
+                password: password.value,
+                username: phone.value
+            }
+        }).then((res: any) => {
+            console.log('获取登录后的token权限', res);
+            if(res.code == 0) {
+                localStorage.setItem("token", res.data.accessToken);    
+                router.push({ path: `/mobileHome?idisCode=88.555.6008%2F08WPEA2010001CD660000001` })            
+            }
+        })
     }
 };
 </script>

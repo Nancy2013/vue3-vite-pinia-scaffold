@@ -161,8 +161,6 @@ export const getPath = (title: String, routers: any) => {
     if (Array.isArray(routers)) {
         const current = routers.filter((item: any) => item.title === title)[0]
         if (current) {
-            console.log('-------getPath-----', current);
-
             return current.path;
         }
     }
@@ -179,7 +177,9 @@ export const getPath = (title: String, routers: any) => {
 export const convertCode=(containerId:string,param:any,width:number=200,height:number=200)=>{ 
     const qrcode: any = document.getElementById(containerId);
     const {origin}=window.location;
-    const text=`${origin}/weixin.html#/code?code=${param}`;
+    const text=`${origin}/#/mobileHome?idisCode=${param}`;
+    console.log('----convertCode-----',text);
+    
     new QRCode(qrcode, {
         text,
         width,

@@ -68,7 +68,7 @@ export default defineComponent({
             selectedKeys: [] as any[],
         });
         const colorList = [
-            "#368EC4",
+            "#3D71F6;",
             "#2BA471",
             "#E37318",
             "#D54941",

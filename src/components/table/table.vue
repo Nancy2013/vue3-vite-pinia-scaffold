@@ -2,8 +2,8 @@
  * @Description: 列表页面组件
  * @Author: zhang zhen
  * @Date: 2023-07-10 11:32:48
- * @LastEditors: zhang zhen
- * @LastEditTime: 2023-07-17 11:38:57
+ * @LastEditors: juliettewang juliettewangms@163.com
+ * @LastEditTime: 2023-11-29 10:58:21
  * @FilePath: /zhiyun-outsource-web/src/components/plugins/tableView.vue
 -->
 <template>
@@ -84,7 +84,7 @@
                 <a-pagination :current="paginationConfig.current" :total="paginationConfig.total" :showSizeChanger="true" @change="handleChangePage" :responsive="true" />
                 <div class="pageArea-quick-jumper">
                     <span>跳至</span>
-                    <TsxInput input-type="int" @blur="handlePaginationBlur" v-model:value="jumperNum"></TsxInput>
+                    <TsxInput input-type="int" @pressEnter="handlePaginationBlur" v-model:value="jumperNum"></TsxInput>
                     <span>/{{ totalPage }} 页</span>
                 </div>
             </div>

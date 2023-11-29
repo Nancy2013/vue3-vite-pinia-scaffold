@@ -33,27 +33,27 @@ const columns = [
     width: 200,
   },
   {
-    key: "containerTypeName",
-    dataIndex: "containerTypeName",
+    key: "serialNo",
+    dataIndex: "serialNo",
     title: "电池序列号",
     width: 200,
   },
   {
-    key: "boCategoryName",
-    dataIndex: "boCategoryName",
-    title: "护照参数数量",
+    key: "templateName",
+    dataIndex: "templateName",
+    title: "护照模板名称",
     width: 200,
   },
   {
-    key: "specs",
-    dataIndex: "specs",
+    key: "num",
+    dataIndex: "num",
+    title: "护照参数/数据参数",
+    width: 200,
+  },
+  {
+    key: "updateTime",
+    dataIndex: "updateTime",
     title: "认证时间",
-    width: 200,
-  },
-  {
-    key: "status",
-    dataIndex: "status",
-    title: "认证状态",
     width: 200,
   },
   {
@@ -73,50 +73,58 @@ export default defineComponent({
     const state = reactive({
       columns,
       search: {
-        passportName: "",
+        templateName: "",
         serialNo: "",
         productNo: "",
         productBatchNo: "",
-      },
+        timePicker:[],
+        // status:3,
+      } as any,
       searchRenderList: [
-        // {
-        //   label: "护照模版名称",
-        //   key: "passportName",
-        //   type: "input",
-        //   placeholder: "护照模版名称",
-        // },
         {
           label: "产品型号",
           key: "productNo",
           type: "input",
           placeholder: "产品型号",
+          values:[0,1,2,3],
         },
         {
           label: "批次号",
           key: "productBatchNo",
           type: "input",
           placeholder: "批次号",
+          values:[0,1,2,3],
         },
         {
           label: "电池序列号",
           key: "serialNo",
           type: "input",
           placeholder: "电池序列号",
+          values:[0,1,2,3],
         },
+        // {
+        //   label: "护照模版名称",
+        //   key: "templateName",
+        //   type: "input",
+        //   placeholder: "护照模版名称",
+        //   values:[0,1],
+        // },
         // {
         //   label: "认证时间",
         //   key: "timePicker",
         //   type: 'datePicker',
         //   datePickerType: 'rangePicker',
         //   picker: 'month',
-        //   valueFormat: pickerFormat.monthFormat
+        //   valueFormat: pickerFormat.monthFormat,
+        //   values:[2,3],
         // },
       ],
       visible: false,
       formData: {} as any,
+      title:'电池护照二维码',
     });
     const search = toRef(state, "search");
-    const { queryContainer } = service.passportManage;
+    const { queryPassportList } = service.passportManage;
 
     /**
      * 转换搜索条件
@@ -140,7 +148,7 @@ export default defineComponent({
       return newSearch;
     };
     const opts = {
-      queryParams: queryContainer,
+      queryParams: queryPassportList,
       search,
       transformSearch,
     };
@@ -154,6 +162,15 @@ export default defineComponent({
       handleReset,
     } = usePage(opts);
     onMounted(() => {});
+
+    /**
+     * 获取搜索条件
+     */
+    const getSearch=computed(()=>{
+      const {search,searchRenderList}=state;
+      // const searchRender=searchRenderList.filter((item:any)=>item.values.includes(search.status));
+      return searchRenderList;
+    });
 
     /**
      * 获取表格列
@@ -201,9 +218,38 @@ export default defineComponent({
       state.formData = {} as any;
     };
 
+  /**
+   * 切换tab
+   * @param activeKey 当前tab
+   */
+    const handleChangeTab=(activeKey:number|string)=>{
+      console.log('----handleChangeTab----',state.search);
+      resetSearch();
+      query();
+    }
+
+    /**
+     * 切换tab重置搜索条件
+     */
+    const resetSearch=()=>{
+      const {status}=state.search;
+
+      if(status===0||status===1){
+        // 待生成 | 认证中
+        state.search.timePicker=[];
+      }
+
+      if(status===2||status===3){
+        // 认证不通过 | 认证通过
+        state.search.templateName='';
+      }
+
+    }
+
     return {
       ...toRefs(state),
       getColumns,
+      getSearch,
       dataSource,
       loading,
       pagination,
@@ -213,6 +259,7 @@ export default defineComponent({
       handleReset,
       handleClose,
       hideModal,
+      handleChangeTab,
     };
   },
 });

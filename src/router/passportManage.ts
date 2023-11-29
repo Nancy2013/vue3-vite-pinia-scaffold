@@ -2,7 +2,7 @@ const passportManage=[
     {
         id:'1-0',
         level: 1,
-        icon: "audit",
+        icon: "detail",
         path: "#",
         name: "passportManage",
         title: "护照管理",

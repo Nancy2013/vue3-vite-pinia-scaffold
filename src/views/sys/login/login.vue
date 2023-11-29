@@ -15,7 +15,7 @@
                                     <a-form-item :rules="[
                                         { required: true, message: '请输入账号' },
                                     ]">
-                                        <a-input v-model:value="formState.userName" placeholder="请输入账号" />
+                                        <a-input v-model:value="formState.username" placeholder="请输入账号" />
                                     </a-form-item>
 
                                     <a-form-item :rules="[
@@ -56,7 +56,7 @@
                                     <a-form-item :rules="[
                                         { required: true, message: '请填写姓名' },
                                     ]">
-                                        <a-input v-model:value="registerState.userName" placeholder="请填写姓名" />
+                                        <a-input v-model:value="registerState.username" placeholder="请填写姓名" />
                                     </a-form-item>
 
                                     <a-form-item :rules="[
@@ -101,29 +101,27 @@ import { useRouter } from "vue-router";
 import request from "@/utils/axios";
 import { throttleFnc } from "@/utils/common";
 interface FormState {
-    userName: string;
+    username: string;
     password: string;
-    remember: boolean;
 }
 interface RegisterState {
     phoneNumber: string;
     verifyCode: string;
-    userName: string;
+    username: string;
     password: string;
     confirmPassword: string;
 }
 export default defineComponent({
     setup() {
         const formState = reactive<FormState>({
-            userName: "",
-            password: "",
-            remember: true,
+            username: "",
+            password: ""
         });
 
         const registerState = reactive<RegisterState>({
             phoneNumber: '',
             verifyCode: '',
-            userName: '',
+            username: '',
             password: '',
             confirmPassword: ''
         })
@@ -139,26 +137,28 @@ export default defineComponent({
             console.log("Failed:", errorInfo);
         };
         const disabled = computed(() => {
-            return !(formState.userName && formState.password);
+            return !(formState.username && formState.password);
         });
 
         // 接口
         const interfaceLogin = throttleFnc(function (callback: Function, data: any) {
             isLoading.value = true
             request({
-                url: `${import.meta.env.VITE_BASE_URL}/login`,
+                url: `${import.meta.env.VITE_BASE_URL}/auth/login`,
                 type: "json",
                 method: "post",
                 data: data,
             }).then((res: any) => {
-                localStorage.setItem("token", res.data.token);
-                router.push({ path: "/productManage/passportManageList" });
-                isLoading.value = false
-                callback()
-                message.success({
-                    content: "登录成功!",
-                    duration: 0.4,
-                });
+                if (res.code == 0) {
+                    localStorage.setItem("token", res.data.accessToken);
+                    router.push({ path: '/productManage/passportManageList' })
+                    isLoading.value = false
+                    callback()
+                    message.success({
+                        content: "登录成功!",
+                        duration: 0.4,
+                    });
+                }
             }).catch(() => {
                 isLoading.value = false
                 callback()
@@ -189,7 +189,7 @@ export default defineComponent({
 }
 
 .login-img {
-    width: 54%;
+    width: 50%;
     height: 100%;
 
     >img {
@@ -200,12 +200,12 @@ export default defineComponent({
 
 .login-main {
     position: relative;
-    width: 46%;
+    width: 50%;
     height: 100%;
 
     .login-card {
         position: absolute;
-        top: calc(50% - calc(calc(468em / @num) / 2));
+        top: calc(50% - calc(calc(550em / @num) / 2));
         left: calc(50% - calc(calc(440em / @num) / 2));
 
     }
@@ -286,4 +286,5 @@ export default defineComponent({
         height: calc(35em / @num);
         width: 100%;
     }
-}</style>
+}
+</style>
