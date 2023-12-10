@@ -70,7 +70,9 @@ export default defineComponent({
     /**
      * 重置
      */
-    const handleReset=()=>{}
+    const handleReset=()=>{
+      appStore.$reset();
+    }
 
     return {
       ...toRefs(state),
