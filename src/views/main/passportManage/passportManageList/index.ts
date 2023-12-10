@@ -148,8 +148,8 @@ export default defineComponent({
       return newSearch;
     };
     const opts = {
-      queryParams: queryPassportList,
-      search,
+      sendRequest: queryPassportList,
+      searchInitData: state.search,
       transformSearch,
     };
     const {
@@ -160,6 +160,7 @@ export default defineComponent({
       handleSearch,
       paginationChange,
       handleReset,
+      searchData,
     } = usePage(opts);
     onMounted(() => {});
 
@@ -260,6 +261,7 @@ export default defineComponent({
       handleClose,
       hideModal,
       handleChangeTab,
+      searchData,
     };
   },
 });

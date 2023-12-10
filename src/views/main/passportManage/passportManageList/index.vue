@@ -7,7 +7,7 @@
       @pageChange="paginationChange"
       :loading="loading"
       :searchRenderList="getSearch"
-      :searchData="search"
+      :searchData="searchData"
       @search="handleSearch"
     >
       <template #headerBtnArea>
