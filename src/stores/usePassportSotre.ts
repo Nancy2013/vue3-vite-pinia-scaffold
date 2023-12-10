@@ -14,9 +14,9 @@ export const usePassportSotre = defineStore('passportManage', {
       const {name}=appStore.userInfo;
       return `${message}  ${name}`;
     },
-    mergeMessage:(state)=>{
-      return (mergeInfo:string)=>state.message+" "+mergeInfo;
-    }
+    mergeMessage(state){
+      return (mergeInfo:string)=>this.getMessage+" "+mergeInfo;
+    },
   },
   actions:{
     updateParams(payload:Object){
