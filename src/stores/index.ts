@@ -1,2 +1,2 @@
-import * from './useAppSotre'
-import * from './usePassportSotre'
+export * from './useAppSotre'
+export * from './usePassportSotre'

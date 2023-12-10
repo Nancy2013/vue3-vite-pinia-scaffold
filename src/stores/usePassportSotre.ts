@@ -1,21 +1,28 @@
-import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
+import {useAppSotre} from './useAppSotre'
+
+const appStore=useAppSotre();
 
 export const usePassportSotre = defineStore('passportManage', {
   state:()=>({
-    message:'',
+    message:'hello',
     params:{},
   }),
   getters:{
-    getMessage:(state)=>state.message,
+    getMessage:(state)=>{
+      const {message}=state;
+      const {name}=appStore.userInfo;
+      return `${message}  ${name}`;
+    },
     mergeMessage:(state)=>{
-      return (mergeInfo:string)=>state.message+mergeInfo;
+      return (mergeInfo:string)=>state.message+" "+mergeInfo;
     }
   },
   actions:{
-    updateParams(payload:string){
+    updateParams(payload:Object){
       console.log('---updateParams--',payload);
-      this.message=payload;
+      appStore.updateUserInfo(payload);
+      this.params=Object.assign({},{...payload});
     },
   },
 },

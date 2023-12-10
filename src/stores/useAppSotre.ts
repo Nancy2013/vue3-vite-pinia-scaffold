@@ -1,4 +1,3 @@
-import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 
 export const useAppSotre = defineStore('app', {
@@ -13,9 +12,18 @@ export const useAppSotre = defineStore('app', {
     getToken:(state)=>state.token,
   },
   actions:{
-    updateUserInfo(payload:string){
+    updateUserInfo(payload:Object){
       console.log('---updateUserInfo--',payload);
-      this.userInfo=payload;
+      this.userInfo=Object.assign({},{...this.userInfo},{...payload});
+    },
+    updateUserInfoAsync(payload:Object){
+      console.log('---updateUserInfoAsync--',payload);
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          this.userInfo=Object.assign({},{...this.userInfo},{...payload});
+          resolve('Async done.')
+        }, 3000)
+      })
     },
   },
 },
