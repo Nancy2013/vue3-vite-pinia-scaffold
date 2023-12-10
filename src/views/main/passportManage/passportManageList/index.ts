@@ -28,13 +28,13 @@ export default defineComponent({
      */
     const handleUpdate=()=>{
       // 批量更新
-      // appStore.$patch({
-      //   token:'1234567890',
-      //   userInfo:{
-      //     name:'Hello World',
-      //     password:'123456',
-      //   }
-      // })
+      appStore.$patch({
+        token:'1234567890',
+        userInfo:{
+          name:'Hello World',
+          password:'123456',
+        }
+      })
 
       // 单个更新
       // appStore.userInfo={
@@ -58,11 +58,11 @@ export default defineComponent({
       // appStore.updateUserInfoAsync({age:20});
 
       // store间调用
-      passportSotre.updateParams({
-        name:'World',
-        password:'123456',
-        age:20,
-      });
+      // passportSotre.updateParams({
+      //   name:'World',
+      //   password:'123456',
+      //   age:20,
+      // });
 
       console.log('----useAppSotre--',appStore.userInfo);
     }
