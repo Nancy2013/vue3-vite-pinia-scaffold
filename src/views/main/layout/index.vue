@@ -1,24 +1,18 @@
 <template>
   <a-layout class="manage">
-    <Header
-      :routes="routes"
-      :noticeNum="noticeNum"
-      v-model:activeKey="activeKey"
-      @change="handleTabChange"
-    />
+    <Header :routes="routes"
+            :noticeNum="noticeNum"
+            v-model:activeKey="activeKey"
+            @change="handleTabChange" />
     <a-layout>
-      <Sider
-        v-show="!isFullPage"
-        ref="sliderRef"
-        :routeList="routeList"
-        :activeKey="activeKey"
-      />
+      <Sider v-show="!isFullPage"
+             ref="sliderRef"
+             :routeList="routeList"
+             :activeKey="activeKey" />
       <a-layout>
-        <Breaumb
-          v-show="!isFullPage"
-          :routeList="routeList"
-          :activeKey="activeKey"
-        />
+        <Breaumb v-show="!isFullPage"
+                 :routeList="routeList"
+                 :activeKey="activeKey" />
         <Content />
       </a-layout>
     </a-layout>
@@ -55,7 +49,7 @@ export default defineComponent({
     const sliderRef = ref();
     if (isEmpty(localStorage.getItem("token"))) {
       message.error("请先登录");
-      router.push({ path: "/login" });
+      // router.push({ path: "/login" });
     }
 
     /**
@@ -117,48 +111,48 @@ export default defineComponent({
         .getRoutes()
         .filter((item) => Object.is(item.name, "layout"))
         .map((ele) => ele.children)[0];
-        
+
       // 动态路由
-    //   let res = await request({
-    //       url: import.meta.env.VITE_BASE_URL + "/menu/current/user/menu",
-    //       type: "json",
-    //       method: "get",
-    //   });
-    //   if (res.code == 200) {
-    //       const menus = res.data as any;
-    //       if (Array.isArray(menus) && menus.length) {
-    //           for (let i = 0; i < menus.length; i++) {
-    //               // 判断是否有消息菜单权限
-    //               if (menus[i].id === 251) {
-    //                   getNoticeNum()
-    //                   break
-    //               }
-    //           }
-    //           const routes = convertTree(
-    //               menus
-    //                   .sort((a: any, b: any) => a.num - b.num)
-    //                   .map((item: any) => {
-    //                       return Object.assign({}, item, {
-    //                           path: item.url,
-    //                           title: item.name,
-    //                       });
-    //                   }),
-    //               { id: "id", pid: "parentId" },
-    //               "num"
-    //           )
-    //           console.log('routes1111', routes)
-    //           state.routes = routes;
-    //           if (route.path === "/") {
-    //               const activeKey = routes[0].id;
-    //               state.activeKey = activeKey;
-    //               handleTabChange(activeKey);
-    //           } else {
-    //               getActiveKey(routes);
-    //           }
-    //       } else {
-    //           router.push("/error");
-    //       }
-    //   }
+      //   let res = await request({
+      //       url: import.meta.env.VITE_BASE_URL + "/menu/current/user/menu",
+      //       type: "json",
+      //       method: "get",
+      //   });
+      //   if (res.code == 200) {
+      //       const menus = res.data as any;
+      //       if (Array.isArray(menus) && menus.length) {
+      //           for (let i = 0; i < menus.length; i++) {
+      //               // 判断是否有消息菜单权限
+      //               if (menus[i].id === 251) {
+      //                   getNoticeNum()
+      //                   break
+      //               }
+      //           }
+      //           const routes = convertTree(
+      //               menus
+      //                   .sort((a: any, b: any) => a.num - b.num)
+      //                   .map((item: any) => {
+      //                       return Object.assign({}, item, {
+      //                           path: item.url,
+      //                           title: item.name,
+      //                       });
+      //                   }),
+      //               { id: "id", pid: "parentId" },
+      //               "num"
+      //           )
+      //           console.log('routes1111', routes)
+      //           state.routes = routes;
+      //           if (route.path === "/") {
+      //               const activeKey = routes[0].id;
+      //               state.activeKey = activeKey;
+      //               handleTabChange(activeKey);
+      //           } else {
+      //               getActiveKey(routes);
+      //           }
+      //       } else {
+      //           router.push("/error");
+      //       }
+      //   }
 
       console.log("-----getRoutes----", state.routes);
     };
@@ -209,7 +203,7 @@ export default defineComponent({
       [() => state.routes, () => state.activeKey],
       (newValue) => {
         const [routes, activeKey] = newValue;
-        state.routeList=routes;
+        state.routeList = routes;
       },
       { immediate: true }
     );

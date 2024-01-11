@@ -1,6 +1,5 @@
-export  const BASE_URL='/admin-api' // api前缀
-export const formatData = (api: string, method: string, params: any, env?: string) => {
-	const url=env?import.meta.env[env] + api:BASE_URL+api;
+export const formatData = (api: string, method: string, params: any,) => {
+	const url=import.meta.env.VITE_BASE_URL+api;
 	const data = {
 		url,
 		type: "json",
